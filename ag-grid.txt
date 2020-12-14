@@ -1,0 +1,34 @@
+import React, { useState, useEffect } from 'react';
+import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+
+const App = () => {
+    const [gridApi, setGridApi] = useState(null);
+    const [gridColumnApi, setGridColumnApi] = useState(null);
+
+     const [rowData, setRowData] = useState([]);
+
+    useEffect(() => {
+        fetch('https://s3-ap-southeast-1.amazonaws.com/he-public-data/Leaderboard_Initial_Dataset65148c7.json')
+        .then(result => result.json())
+       .then(rowData => setRowData(rowData))
+     }, []);
+
+    return (
+        <div className="ag-theme-alpine" style={ { height: 400, width: 1000 } }>
+            <AgGridReact
+                rowData={rowData}>
+                <AgGridColumn field="team_name"  filter={true}></AgGridColumn>
+                <AgGridColumn field="wins"  ></AgGridColumn>
+                <AgGridColumn field="losses"   ></AgGridColumn>
+                <AgGridColumn field="ties"   ></AgGridColumn>
+                <AgGridColumn field="score" sortable={true} filter={true} ></AgGridColumn>
+            </AgGridReact>
+        </div>
+    );
+};
+
+export default App;
